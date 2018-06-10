@@ -1,5 +1,5 @@
 """
-Sample implementation of the perceptron algorithm
+Sample implementation of the perceptron algorithm.
 """
 import numpy
 import rpy2.robjects as robjects
@@ -21,8 +21,7 @@ MASS = importr('MASS')
 
 # parameters
 
-learning_rate = 1
-max_iter = 10000
+init_b = 1
 
 n = 100
 
@@ -41,37 +40,27 @@ constant_bias = numpy.array([[1]] * n)
 
 c1 = numpy.matrix(MASS.mvrnorm(n=n, mu=r.c(x1, y1), Sigma=cov_mat1))
 c1_biased = numpy.append(c1, constant_bias, axis=1)
+c1_biased = numpy.transpose(c1_biased)
 
 c2 = numpy.matrix(MASS.mvrnorm(n=n, mu=r.c(x2, y2), Sigma=cov_mat2))
 c2_biased = numpy.append(c2, constant_bias, axis=1)
 c2_biased = numpy.multiply(-1, c2_biased)
+c2_biased = numpy.transpose(c2_biased)
 
 # get linear discriminant function
 
-w = numpy.matrix([1, 1, 1])
-c1_c2 = numpy.concatenate((c1_biased, c2_biased), axis=0)
+b = numpy.transpose(numpy.matrix([[init_b]] * 2*n))
 
-for k in range(max_iter):
-    delta = numpy.matrix([0, 0, 0])
+x_matrix = numpy.concatenate((c1_biased, c2_biased), axis=1)
 
-    for y_i in c1_c2:
-        d_i = get_delta(y_i, w)
-        if d_i <= 0:
-            delta = numpy.add(delta, y_i)
+x_transposed = numpy.transpose(x_matrix)
 
-    w = numpy.add(w, numpy.multiply(learning_rate, delta))
+x_matrix_transposed = numpy.dot(x_matrix, x_transposed)
 
-    holds_for_all = True
-    for y_i in c1_c2:
-        d_i = get_delta(y_i, w)
+x_pseudoinverse = numpy.linalg.inv(x_matrix_transposed)
 
-        if d_i <= 0:
-            holds_for_all = False
-
-    if holds_for_all:
-        print("Converged at iteration {}/{}".format(k, max_iter))
-        break
-    print("No convergence at iteration {}/{}".format(k, max_iter))
+x_transposed_pseudoinverse = numpy.dot(x_transposed, x_pseudoinverse)
+w = numpy.dot(b, x_transposed_pseudoinverse)
 
 print("Parameters are w=({}, {}, {})".format(w.item(0), w.item(1), w.item(2)))
 
