@@ -6,14 +6,6 @@ import rpy2.robjects as robjects
 from matplotlib import pyplot
 from rpy2.robjects.packages import importr
 
-
-def get_delta(y_i: numpy.matrix, w: numpy.matrix) -> float:
-    y_i_t = numpy.transpose(y_i)
-    d_i = numpy.dot(w, y_i_t)
-
-    return d_i
-
-
 # r connection
 
 r = robjects.r
