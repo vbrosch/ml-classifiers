@@ -1,3 +1,7 @@
+"""
+    Implementation of a bayesian classifier that classifies by points by the usage of a gaussian discriminant function
+"""
+
 import numpy as np
 
 from linear_algebra import transpose, init_matrix, matrix_add, matrix_sub, dot, matrix_multiply, matrix_determinant, \
