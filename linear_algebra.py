@@ -105,3 +105,17 @@ def matrix_invert(x):
 
 def matrix_determinant(x):
     return np.linalg.det(x)
+
+
+def to_scalar(x):
+    return x[0][0]
+
+
+def matrix_diag(number: int, shape):
+    m = init_matrix(nrows=shape[0], ncols=shape[1])
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            if i == j:
+                m[i][j] = number
+
+    return m

@@ -43,7 +43,7 @@ def vector_multiply(x, y: float):
     return vector_unary_operation(x, lambda x1: x1 * y)
 
 
-def to_vec(x):
+def to_vec(x: object) -> object:
     return [x]
 
 
