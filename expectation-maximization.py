@@ -5,14 +5,14 @@ import math
 
 import numpy as np
 from matplotlib import pyplot
-from rpy2 import robjects
-from rpy2.robjects.packages import importr
 
-from linear_algebra import matrix_sub, dot, transpose, init_matrix, matrix_add, matrix_multiply, matrix_determinant, \
+from lina.linear_algebra import matrix_sub, dot, transpose, init_matrix, matrix_add, matrix_multiply, matrix_determinant, \
     matrix_invert
-from vectors import to_vec, vector_dim, unwrap
+from lina.vectors import to_vec, vector_dim, unwrap
 
 # init parameters
+from utils.generate_points import generate_2_class_points
+
 max_iter = 10000
 L = 2
 n = 2
@@ -90,11 +90,6 @@ def m_step(samples, mixins, means, covariances):
         covariances[l] = calc_cov_matrix(samples, means[l], ml, l)
 
 
-# r connection
-
-r = robjects.r
-MASS = importr('MASS')
-
 # parameters
 
 n_points = 200
@@ -102,20 +97,17 @@ n_points = 200
 x1 = 2
 y1 = 2
 sigma = 2
-cov_mat1 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
 
 x2 = 5
 y2 = 5
-cov_mat2 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
 
-c1 = np.matrix(MASS.mvrnorm(n=n_points, mu=r.c(x1, y1), Sigma=cov_mat1)).tolist()
-c2 = np.matrix(MASS.mvrnorm(n=n_points, mu=r.c(x2, y2), Sigma=cov_mat2)).tolist()
+points = generate_2_class_points([[x1, y1], [x2, y2]], [sigma, sigma], n_points)
 
 # c1 = [[2, 2], [3, 3], [3, 4], [2, 4]]
 # c2 = [[12, 12], [12, 13], [13, 12], [13, 14]]
 
-c1_points = [to_vec(x) for x in c1]
-c2_points = [to_vec(x) for x in c2]
+c1_points = [to_vec(x) for x in points[0]]
+c2_points = [to_vec(x) for x in points[1]]
 
 all_samples = c1_points + c2_points
 

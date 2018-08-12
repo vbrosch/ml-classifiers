@@ -4,9 +4,9 @@
 
 import numpy as np
 
-from linear_algebra import transpose, init_matrix, matrix_add, matrix_sub, dot, matrix_multiply, matrix_determinant, \
+from lina.linear_algebra import transpose, init_matrix, matrix_add, matrix_sub, dot, matrix_multiply, matrix_determinant, \
     matrix_invert
-from vectors import vector_add, vector_sub, vector_init, vector_multiply, to_vec, vector_dim
+from lina.vectors import vector_add, vector_init, vector_multiply, to_vec, vector_dim
 
 
 def calc_mean(y):
@@ -57,7 +57,7 @@ def discriminant_function(p1, p2, mean1, mean2, cov1, cov2):
     return lambda x: __discriminant_function(p1, mean1, cov1)(x) - __discriminant_function(p2, mean2, cov2)(x)
 
 
-def classify(vec, df):
+def classify(df, vec):
     if df(vec) >= 0:
         assignment = "C1"
     else:

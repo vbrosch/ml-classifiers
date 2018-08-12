@@ -3,11 +3,10 @@ import random
 
 import numpy as np
 from matplotlib import pyplot
-from rpy2 import robjects
-from rpy2.robjects.packages import importr
 
-from linear_algebra import matrix_sub, dot, transpose
-from vectors import to_vec, vector_multiply, vector_init, vector_add, unwrap
+from lina.linear_algebra import matrix_sub, dot, transpose
+from lina.vectors import to_vec, vector_multiply, vector_init, vector_add, unwrap
+from utils.generate_points import generate_points
 
 max_iter = 10000
 d = 2
@@ -80,26 +79,21 @@ def sum_of_cluster_variances():
 
 n = 100
 
-r = robjects.r
-MASS = importr('MASS')
-
 x1 = 5
 y1 = 5
 sigma = 1
-cov_mat1 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
 
 x2 = 10
 y2 = 10
-cov_mat2 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
 
 x3 = 7.5
 y3 = 7.5
 
 # generate class distributions using R
 
-c1 = np.matrix(MASS.mvrnorm(n=n, mu=r.c(x1, y1), Sigma=cov_mat1)).tolist()
-c2 = np.matrix(MASS.mvrnorm(n=n, mu=r.c(x2, y2), Sigma=cov_mat2)).tolist()
-c3 = np.matrix(MASS.mvrnorm(n=n, mu=r.c(x3, y3), Sigma=cov_mat2)).tolist()
+c1 = generate_points([x1, y1], sigma, n).tolist()
+c2 = generate_points([x2, y2], sigma, n).tolist()
+c3 = generate_points([x3, y3], sigma, n).tolist()
 
 c1_vec = [to_vec(x) for x in c1]
 c2_vec = [to_vec(x) for x in c2]

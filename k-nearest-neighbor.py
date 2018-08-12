@@ -1,7 +1,7 @@
 from math import sqrt
 
-from linear_algebra import matrix_sub, transpose, dot, to_scalar
-from vectors import to_vec
+from lina.linear_algebra import matrix_sub, transpose, dot, to_scalar
+from lina.vectors import to_vec
 
 k = 3
 samples = []

@@ -2,9 +2,9 @@
 Sample implementation of the perceptron algorithm
 """
 import numpy
-import rpy2.robjects as robjects
 from matplotlib import pyplot
-from rpy2.robjects.packages import importr
+
+from utils.generate_points import generate_2_class_points
 
 
 def get_delta(y_i: numpy.matrix, w: numpy.matrix) -> float:
@@ -14,35 +14,18 @@ def get_delta(y_i: numpy.matrix, w: numpy.matrix) -> float:
     return d_i
 
 
-# r connection
-
-r = robjects.r
-MASS = importr('MASS')
-
-# parameters
-
+n = 100
 learning_rate = 1
 max_iter = 10000
 
-n = 100
-
-x1 = 5
-y1 = 5
-sigma = 1
-cov_mat1 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
-
-x2 = 10
-y2 = 10
-cov_mat2 = r.matrix(r.c(sigma, 0, 0, sigma), nrow=2, ncol=2)
-
-# generate class distributions using R
-
 constant_bias = numpy.array([[1]] * n)
 
-c1 = numpy.matrix(MASS.mvrnorm(n=n, mu=r.c(x1, y1), Sigma=cov_mat1))
+points = generate_2_class_points(n=n)
+
+c1 = points[0]
 c1_biased = numpy.append(c1, constant_bias, axis=1)
 
-c2 = numpy.matrix(MASS.mvrnorm(n=n, mu=r.c(x2, y2), Sigma=cov_mat2))
+c2 = points[1]
 c2_biased = numpy.append(c2, constant_bias, axis=1)
 c2_biased = numpy.multiply(-1, c2_biased)
 
