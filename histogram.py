@@ -4,26 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # parameters
+from utils.generate_distribution import generate_set
 
 min_x = 0
 max_x = 20
-M = 1000  # number of values
-mixins = [0.5, 0.5]
-means = [5, 15]
-variance = [1, 5]
-
-
-def normal_distribution(x, mean, var) -> float:
-    return (1 / (math.sqrt(2 * math.pi * var))) * math.exp(-(math.pow(x - mean, 2)) / (2 * var))
-
-
-def get_point(x):
-    return [x,
-            sum([mixins[pdf_i] * normal_distribution(x, means[pdf_i], variance[pdf_i]) for pdf_i in range(len(means))])]
-
-
-def generate_set():
-    return [get_point(x) for x in np.arange(min_x, max_x, max_x / M)]
 
 
 def get_bins():
@@ -53,7 +37,7 @@ def bin_probabilities():
     return [(b[1] * delta) for b in bins]
 
 
-samples = generate_set()
+samples = generate_set(min_x, max_x)
 
 for i, dx in enumerate([0.25, 0.5, 1, 2, 4, 5]):
     plt.subplot(2, 3, i + 1)
