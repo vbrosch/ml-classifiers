@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # parameters
-from utils.generate_distribution import generate_set
+from utils.generate_distribution import generate_set, plot_pdf
 
 min_x = 0
 max_x = 20
@@ -17,13 +17,6 @@ def get_bins():
 def get_bin_density(x):
     m_i = sum([s[1] for s in samples if x <= s[0] < (x + delta)])
     return m_i / (sum(s[1] for s in samples) * delta)
-
-
-def plot_pdf():
-    x_axis = [x[0] for x in samples]
-    y_axis = [x[1] for x in samples]
-
-    plt.plot(x_axis, y_axis, color='#A5DF00')
 
 
 def plot_bins():
@@ -45,7 +38,7 @@ for i, dx in enumerate([0.25, 0.5, 1, 2, 4, 5]):
 
     delta = dx
 
-    plot_pdf()
+    plot_pdf(samples)
     bins = get_bins()
     plot_bins()
 
